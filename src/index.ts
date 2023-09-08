@@ -10,10 +10,10 @@ import {
 
 
 interface ToArrowOptions {
-  columnsKind: 'f32' | 'f64'
+  columnsKind?: 'f32' | 'f64'
 }
 interface ToParquetOptions {
-  columnsKind: 'f32' | 'f64'
+  columnsKind?: 'f32' | 'f64'
 }
 
 /**
@@ -35,7 +35,7 @@ type Columns = Record<string,any>
  * Converts a TimeFrame to Arrow data format
  * @param tf The timeframe to convert
  */
-export function toArrow(tf: TimeFrame, options: ToArrowOptions = { columnsKind: 'f64' }): Table {
+export function toArrow(tf: TimeFrame, options: ToArrowOptions = { }): Table {
   const columns: Columns = { time: null }
   const rows = tf.rows()
 
@@ -69,6 +69,13 @@ export function toArrow(tf: TimeFrame, options: ToArrowOptions = { columnsKind: 
         (_, i) => {
           return columns[colName][i]
         })
+    } else {
+      columns[colName] = Array.from(
+        { length: columns[colName].length },
+        (_, i) => {
+          return columns[colName][i]
+        }
+      )
     }
 
   }
@@ -90,7 +97,7 @@ export function fromParquet(buffer: Buffer): TimeFrame {
  * Converts a TimeFrame to Parquet data format
  * @param tf 
  */
-export function toParquet(tf: TimeFrame, options: ToParquetOptions = { columnsKind: 'f64' }): Buffer {
+export function toParquet(tf: TimeFrame, options: ToParquetOptions = {  }): Buffer {
   const writerProperties = new WriterPropertiesBuilder()
     .setCompression(Compression.ZSTD)
     .build()
