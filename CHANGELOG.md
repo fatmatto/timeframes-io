@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.6](https://github.com/fatmatto/timeframes-io/compare/v1.0.4...v1.0.6) (2023-09-08)
+
+
+### Bug Fixes
+
+* remove float64 as default type for columns ([990650c](https://github.com/fatmatto/timeframes-io/commit/990650c8190431e4559ab26e29976262c72c9266))
+
 # 📦 1.0.4 (8 Sep 2023)
 - [6bc92](https://github.com/fatmatto/timeframes-io/commit/6bc92670d6c7f7a30ad6f72451cb9a5c985c1883)  chore(release): 1.0.4
 - [aa1a1](https://github.com/fatmatto/timeframes-io/commit/aa1a14a40db0049c2290c0a94f06819ca1499772)  📦 Release 1.0.2 standard-version [skip ci]

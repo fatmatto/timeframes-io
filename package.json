@@ -1,6 +1,6 @@
 {
   "name": "@apio/timeframes-io",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Timeframes from/to various filetypes",
   "keywords": [
     "parquet",
