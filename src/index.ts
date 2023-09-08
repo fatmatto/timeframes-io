@@ -2,11 +2,12 @@ import { TimeFrame } from "@apio/timeframes"
 
 import { Table, tableFromArrays, tableFromIPC, tableToIPC } from 'apache-arrow'
 import {
-  readParquet,
   writeParquet,
   Compression,
   WriterPropertiesBuilder
 } from 'parquet-wasm/node/arrow1'
+
+import {fromParquetBuffer } from '@fatmatto/massello'
 
 interface ToArrowOptions {
   columnsKind: 'f32' | 'f64'
@@ -79,8 +80,8 @@ export function toArrow(tf: TimeFrame, options: ToArrowOptions = { columnsKind: 
  * Returns a new TimeFrame from a Parquet dataset
  * @param buffer Parquet buffer
  */
-export function fromParquet(buffer: Buffer): TimeFrame {
-  return new TimeFrame({ data: tableFromIPC(readParquet(buffer)).toArray() })
+export async function fromParquet(buffer: Buffer,columns: string[] = []): Promise<TimeFrame> {
+  return new TimeFrame({ data: tableFromIPC(new Uint8Array(fromParquetBuffer(buffer,columns))).toArray() })
 }
 
 

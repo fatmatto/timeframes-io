@@ -2,7 +2,12 @@
   "name": "@apio/timeframes-io",
   "version": "1.0.0",
   "description": "Timeframes from/to various filetypes",
-  "keywords": ["parquet","csv","arrow","dataframe"],
+  "keywords": [
+    "parquet",
+    "csv",
+    "arrow",
+    "dataframe"
+  ],
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
   "main": "build/main/index.js",
@@ -49,16 +54,16 @@
       "!build/module/**"
     ]
   },
-    "files": [
-      "src",
-      "build/main",
-      "build/module",
-      "!**/*.spec.*",
-      "!**/*.json",
-      "CHANGELOG.md",
-      "LICENSE",
-      "README.md"
-    ],
+  "files": [
+    "src",
+    "build/main",
+    "build/module",
+    "!**/*.spec.*",
+    "!**/*.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
   "author": "Mattia Alfieri",
   "license": "ISC",
   "devDependencies": {
@@ -82,8 +87,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@fatmatto/massello": "^0.0.0",
     "apache-arrow": "^12.0.1",
-    "parquet-wasm": "^0.4.0-beta.5"
+    "parquet-wasm": "^0.4.0-beta.5",
+    "parquetjs-lite": "^0.8.7"
   },
   "peerDependencies": {
     "@apio/timeframes": "^1.1.2"
