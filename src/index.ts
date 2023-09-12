@@ -1,6 +1,10 @@
 import { TimeFrame } from "@apio/timeframes"
 
-import { Table, tableFromArrays, tableFromIPC, tableToIPC } from 'apache-arrow'
+import { Float64, Table, TypeMap, Vector, tableFromIPC, tableToIPC,  Schema,
+  vectorFromArray,
+  RecordBatch,
+  Field
+ } from 'apache-arrow'
 import {
   readParquet,
   writeParquet,
@@ -8,13 +12,8 @@ import {
   WriterPropertiesBuilder
 } from 'parquet-wasm/node/arrow1'
 
-
-interface ToArrowOptions {
-  columnsKind?: 'f32' | 'f64'
-}
-interface ToParquetOptions {
-  columnsKind?: 'f32' | 'f64'
-}
+type VectorsMap<T extends TypeMap> = { [P in keyof T]: Vector<T[P]> };
+type Columns = Record<string, any>
 
 /**
  * Returns a new TimeFrame from an arrow dataset
@@ -25,17 +24,14 @@ export function fromArrow(data: Table): TimeFrame {
 }
 
 
-// interface Columns {
-//   [k: string] : any
-// }
-
-type Columns = Record<string,any>
-
 /**
- * Converts a TimeFrame to Arrow data format
- * @param tf The timeframe to convert
+ * Converts a TimeFrame to Arrow format
+ * @param tf The timeframe to convert to Arrow
+ * @returns Arrow Table
  */
-export function toArrow(tf: TimeFrame, options: ToArrowOptions = { }): Table {
+export function toArrow(tf: TimeFrame): Table {
+  const fields = []
+  const vectors = {} as VectorsMap<any>;
   const columns: Columns = { time: null }
   const rows = tf.rows()
 
@@ -46,41 +42,27 @@ export function toArrow(tf: TimeFrame, options: ToArrowOptions = { }): Table {
     }
   })
 
-  columns.time = Array.from(
-    { length: columns.time.length },
-    (_, i) => {
-      return new Date(columns.time[i]).getTime()
-    }
-  )
-
-
-
   for (const colName in columns) {
-    if (colName === 'time') { continue }
-    if (options.columnsKind === 'f64') {
-      columns[colName] = Float64Array.from(
-        { length: columns[colName].length },
-        (_, i) => {
-          return columns[colName][i]
-        })
-    } else if (options.columnsKind === 'f32') {
-      columns[colName] = Float32Array.from(
-        { length: columns[colName].length },
-        (_, i) => {
-          return columns[colName][i]
-        })
+    if (colName === 'time') {
+      fields.push(Field.new({ name: 'time', type: new Float64(), nullable: true }))
+      vectors[colName] = vectorFromArray(columns[colName].map(t => new Date(t).getTime()))
     } else {
-      columns[colName] = Array.from(
-        { length: columns[colName].length },
-        (_, i) => {
-          return columns[colName][i]
-        }
-      )
+      fields.push(Field.new({ name: colName, type: new Float64(), nullable: true }))
+      vectors[colName] = vectorFromArray(columns[colName])
+
     }
+  } 
 
+  const schema = new Schema(fields)
+  const batchDefinition = {}
+  for (const colName in vectors) {
+    batchDefinition[colName] = vectors[colName].data[0]
   }
-
-  return tableFromArrays(columns)
+  const batches = [
+    new RecordBatch(batchDefinition),
+  ]
+  
+  return new Table<any>(schema, batches)
 }
 
 /**
@@ -88,7 +70,6 @@ export function toArrow(tf: TimeFrame, options: ToArrowOptions = { }): Table {
  * @param buffer Parquet buffer
  */
 export function fromParquet(buffer: Buffer): TimeFrame {
-  console.log("IPC", tableFromIPC(readParquet(buffer)));
   return new TimeFrame({ data: tableFromIPC(readParquet(buffer)).toArray() })
 }
 
@@ -97,12 +78,12 @@ export function fromParquet(buffer: Buffer): TimeFrame {
  * Converts a TimeFrame to Parquet data format
  * @param tf 
  */
-export function toParquet(tf: TimeFrame, options: ToParquetOptions = {  }): Buffer {
+export function toParquet(tf: TimeFrame): Buffer {
   const writerProperties = new WriterPropertiesBuilder()
     .setCompression(Compression.ZSTD)
     .build()
   return Buffer.from(writeParquet(
-    tableToIPC(toArrow(tf, { columnsKind: options.columnsKind }), 'stream'),
+    tableToIPC(toArrow(tf), 'stream'),
     writerProperties
   ))
 }

@@ -87,10 +87,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@fatmatto/massello": "^0.0.0",
-    "apache-arrow": "^12.0.1",
-    "parquet-wasm": "^0.4.0-beta.5",
-    "parquetjs-lite": "^0.8.7"
+    "apache-arrow": "^13.0.0",
+    "parquet-wasm": "^0.4.0-beta.5"
   },
   "peerDependencies": {
     "@apio/timeframes": "^1.1.2"
