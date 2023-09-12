@@ -1,16 +1,9 @@
-# Changelog
-
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
-## [1.1.0](https://github.com/fatmatto/timeframes-io/compare/v1.0.6...v1.1.0) (2023-09-12)
-
-
-### Features
-
-* manually build arrow tables ([abc023c](https://github.com/fatmatto/timeframes-io/commit/abc023c05c2b06b9c6d1fa783ab514546faa544c))
-
+# 📦 1.1.0 (12 Sep 2023)
+- [de6c7](https://github.com/fatmatto/timeframes-io/commit/de6c7b37a82c389c594d2b33e6487a00a1edc173)  chore(release): 1.1.0
+- [5fcbb](https://github.com/fatmatto/timeframes-io/commit/5fcbbce60df604a5b3ac49ee10774180df889474)  📦 Release 1.0.6 standard-version [skip ci]
 # 📦 1.0.6 (8 Sep 2023)
 - [a7006](https://github.com/fatmatto/timeframes-io/commit/a700648241975be7506b8eb279acb19501407919)  chore(release): 1.0.6
+- [99065](https://github.com/fatmatto/timeframes-io/commit/990650c8190431e4559ab26e29976262c72c9266)  fix: remove float64 as default type for columns
 - [c491c](https://github.com/fatmatto/timeframes-io/commit/c491c91b74ae8f3167aa13f6df23c0604a56350b)  📦 Release 1.0.4 standard-version [skip ci]
 # 📦 1.0.4 (8 Sep 2023)
 - [6bc92](https://github.com/fatmatto/timeframes-io/commit/6bc92670d6c7f7a30ad6f72451cb9a5c985c1883)  chore(release): 1.0.4
